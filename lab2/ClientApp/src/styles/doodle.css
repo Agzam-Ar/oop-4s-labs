@@ -1,0 +1,259 @@
+/* Doodle CSS
+ * https://github.com/chr15m/doodle-css
+ */
+
+.doodle * {
+	box-sizing: border-box;
+}
+
+.doodle {
+	background-color: #FDF7F1;
+	/*color: #000000;*/
+	color: #000;
+}
+
+.doodle input, .doodle textarea, .doodle table, .doodle img {
+	max-width: 100%;
+	outline: none;
+}
+
+.doodle fieldset * {
+	max-width: calc(100vw - 100px);
+}
+
+.doodle table {
+	overflow: scroll;
+}
+
+.doodle a {
+	color: #1c1c1c;
+	font-weight: bold;
+}
+
+.doodle ul li {
+	list-style-type: "* ";
+}
+
+.doodle label {
+	padding: 0.25em 0px;
+	display: inline-block;
+}
+
+.doodle fieldset, .doodle textarea {
+	border-style: solid;
+	border-width: 10px 10px 10px 10px;
+	border-image: url(border.svg) 10 10 10 10 stretch stretch;
+}
+
+.doodle .border, .doodle-border {
+	border-style: solid;
+	border-width: 10px 10px 10px 10px;
+	border-image: url(button.svg) 10 10 10 10 stretch stretch;
+}
+
+/*.doodle input, */.doodle select {
+	border-style: solid;
+	border-width: 10px 10px 10px 10px;
+	border-image: url(button.svg) 10 10 10 10 stretch stretch;
+}
+
+.doodle button {
+	text-align: center;
+}
+
+.doodle input[type="color"] {
+	min-height: 1.5em;    
+}
+
+.doodle hr {
+	border-style: solid;
+	border-width: 0px 3px 6px 3px;
+	border-image: url(hr.svg) 0 3 6 3 stretch stretch;
+}
+
+.doodle blockquote {
+	border-left-style: solid;
+	border-width: 0px 6px 3px 6px;
+	border-image: url(bq.svg) 0 6 3 6 stretch stretch;
+	padding-left: 0.5em;
+}
+
+.doodle pre {
+	overflow: auto;
+}
+
+.doodle table {
+	border-collapse: collapse;
+	overflow: auto;
+	display: block;
+}
+
+.doodle table thead {
+	border-bottom: 3px solid #bbb;
+}
+
+.doodle table caption {
+	border-bottom-style: solid;
+	border-width: 0px 3px 6px 3px;
+	border-image: url(hr.svg) 0 3 6 3 stretch stretch;
+}
+
+.doodle table td {
+	vertical-align: top;
+}
+
+.doodle img {
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 3px 3px 3px 3px;
+	border-image: url(button.svg) 3 3 3 3 stretch stretch;
+}
+
+.doodle select {
+	appearance: none;
+	padding-right: 1.5em;
+	background: url(caret.svg) no-repeat right transparent;
+	background-position-x: calc(100% - 10px);
+}
+
+.doodle select[multiple] {
+	background: none;
+	padding: 0px;
+}
+
+.doodle button, .doodle textarea, .doodle input, .doodle select {
+	background-color: unset;
+	font-family: 'Short Stack', cursive;
+	font-size: 1em;
+	color: #000000;
+}
+
+.doodle input[type="checkbox"] {
+	border-width: 6px 6px 6px 6px;
+	border-image: url(checkbox.svg) 6 6 6 6 stretch stretch;
+}
+
+.doodle input[type="radio"] {
+	border-width: 16px 16px 16px 16px;
+	border-image: url(radio.svg) 16 16 16 16 stretch stretch;
+}
+
+.doodle input[type="checkbox"], .doodle input[type="radio"] {
+	appearance: none;
+	outline: 0;
+	background: transparent;
+	width: 1.5em;
+	height: 1.5em;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.doodle input[type="checkbox"]:after, .doodle input[type="radio"]:after {
+	font-size: 1.25em;
+	content: " ";
+	margin-bottom: -0.25em;
+}
+
+.doodle input[type="checkbox"]:disabled:after, .doodle input[type="radio"]:disabled:after {
+	content: "-";
+	color: grey;
+}
+
+.doodle input[type="checkbox"]:checked:after, .doodle input[type="radio"]:checked:after {
+	content: "*";
+}
+
+
+
+/*  */
+
+.input {
+	display: inline-block;
+	padding: 0 !important;
+	--color: #d3d3d3 !important;
+}
+.input[focus="1"] {
+	--color: #ddd !important;
+    filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.2));
+}
+.input.err {
+	display: inline-block;
+	padding: 0 !important;
+	--color: tomato !important;
+}
+
+.doodle button, .doodle .input {
+	position: relative;
+	border: none;
+	background: none;
+	border-style: solid;
+	padding: 10px 20px 10px 20px;
+	margin: 6px;
+	border-color: transparent;
+    border-radius: 5px;
+    /*--color: transparent;*/
+}
+
+button:hover {
+    filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.2));
+}
+
+.doodle button::before, .input::before {
+    content: "";
+    position: absolute;
+    inset: 2px; 
+    background: var(--color);
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 4px; 
+}
+
+
+.doodle button::after, .input::after {
+	content: "";
+	position: absolute;
+	/*inset: -2px;*/
+    top: 0; left: 0; right: 0; bottom: 0;
+	border-style: solid;
+	border-width: 5px;
+	border-image: url(button.svg) 5 5 5 5 stretch stretch;
+	pointer-events: none; 
+}
+
+.doodle button:hover::after {
+	animation: .3s doodle-shake infinite steps(1);
+}
+
+
+
+.input > * {
+	border: none;
+	outline: none;
+	box-shadow: none;
+	padding: 5px 10px;
+	background: transparent;
+}
+
+@keyframes doodle-shake {
+	0% {
+		transform: scaleX(1); 
+	}
+	25% {
+		/*transform: scaleX(-1); */
+	}
+	50% {
+		transform: scaleX(-1) scaleY(-1); 
+	}
+	50% {
+		/*transform: scaleY(-1); */
+	}
+}
+
+.remove::before {
+    background-image: url('x.svg') !important;
+    background-size: 50% !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
