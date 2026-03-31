@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database Connection -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/lab3db</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>
+
+        <!-- JDBC Connection Pool -->
+        <property name="hibernate.connection.pool_size">10</property>
+
+        <!-- SQL Dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Show SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Hibernate Session Context -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Auto Schema Update (for development) -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- JDBC Settings -->
+        <property name="hibernate.jdbc.batch_size">20</property>
+        <property name="hibernate.order_inserts">true</property>
+        <property name="hibernate.order_updates">true</property>
+        <property name="hibernate.jdbc.fetch_size">50</property>
+
+        <!-- Second Level Cache (optional) -->
+        <!-- <property name="hibernate.cache.use_second_level_cache">true</property> -->
+        <!-- <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property> -->
+
+        <!-- Logging -->
+        <property name="hibernate.generate_statistics">false</property>
+
+        <!-- Mapping Files (if using XML mappings) -->
+        <!-- <mapping resource="com/example/entity/User.hbm.xml"/> -->
+        
+        <!-- Annotated Classes -->
+        <mapping class="com.example.models.Shape"/>
+        <mapping class="com.example.models.Rect"/>
+        <mapping class="com.example.models.Ring"/>
+    </session-factory>
+</hibernate-configuration>
