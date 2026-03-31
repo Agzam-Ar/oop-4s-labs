@@ -1,4 +1,4 @@
-# Lab3 — PostgreSQL + Hibernate
+# Lab3: PostgreSQL + Hibernate
 
 ## Требования
 
