@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+
+:root {
+    --view: 900px;
+    --gap: 8px;
+    --q-gap: 16px;
+}
+
+body {
+    position: relative;
+    font-family: 'Short Stack', cursive;
+    margin: 0;
+    min-height: 100vh;
+    min-width: 100%;
+    width: fit-content;
+}
+
+
+.body {
+    padding: 50px;
+    width: fit-content;
+    min-width: var(--view);
+    margin: auto;
+    padding-bottom: 500px;
+}
+
+button {
+    user-select: none;
+}
+
+.database-tabs {
+
+}
+
+.database-constructor {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+}
+
+.database-constructor > label {
+    margin-left: var(--q-gap);
+}
+
+.database-tabs > .selected {
+    --color: #479eff;
+    --color: #bbdbff;
+}
+
+.ok {
+    --color: #d5e9c3;
+}
+
+#noise {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-image: url("paper-2.png");
+    background-repeat: repeat;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    opacity: .5;
+}
+
+
+.database-table {
+    width: 100%;
+    min-height: 200px;
+    align-content: start;
+}
+
+.database-col > * {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--gap);
+    /*grid-column: var(--col-index); */
+    /*min-height: 20px;*/
+    /*max-height: 20px;*/
+    /*box-sizing: border-box !important;*/
+    /*margin: 0 !important;*/
+}
+
+.database-header {
+    font-weight: bold;
+}
+
+.database-separator {
+    background-image: url('styles/line.svg');
+    background-size: 5px auto;
+    border-radius: 20px;
+    background-repeat: repeat-y;
+    opacity: .5;
+}
+
+.call {
+    display: inline-block;
+    --color: #d5e9c3;
+    /*padding: 0 !important;*/
+    margin: 0 !important;
+    height: fit-content;
+}
+
+.remove {
+    display: inline-block;
+    --color: #ff8f87;
+    margin: 0 !important;
+    height: fit-content;
+    padding: 10px !important;
+    width: 46px;
+    height: 46px;
+}
+
+* {
+    outline: none;
+}
