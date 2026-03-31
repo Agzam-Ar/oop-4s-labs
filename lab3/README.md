@@ -54,5 +54,5 @@ docker exec -it lab3-postgres psql -U postgres -d lab3db
 
 ```bash
 mvn compile
-mvn exec:java -Dexec.mainClass="com.example.App"
+mvn exec:java -Dexec.mainClass="com.example.Server"
 ```
