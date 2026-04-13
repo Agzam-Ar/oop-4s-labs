@@ -18,11 +18,11 @@ public class Server {
         new Server().start();
     }
 
-    @SuppressWarnings("unchecked")
 	public void start() throws IOException {
-        List<Class<? extends Shape>> types = List.of(Rect.class, Ring.class);
-
+        List<Class<?>> types = List.of(Rect.class, Ring.class, ShapesGroup.class);
+//        List<Class<?>> extraTypes = List.of();
         for (var type : types) classes.put(type.getSimpleName(), new ClassMeta(type));
+//        for (var type : extraTypes) classes.put(type.getSimpleName(), new ClassMeta(type));
         
         HttpServer server = HttpServer.create(new InetSocketAddress(7053), 0);
         
@@ -46,8 +46,9 @@ public class Server {
                 String[] parts = path.split("/");
                 String type = parts[parts.length - 1];
                 ClassMeta meta = classes.get(type);
-                sendJson(e, context.getItems((Class<Shape>) meta.type));
-            } catch (Exception ex) {
+                System.out.println("context: " + context.getItems(meta.type));
+                sendJson(e, context.getItems(meta.type));
+            } catch (Throwable ex) {
                 sendError(e, 500, ex);
             }
         });
@@ -59,7 +60,7 @@ public class Server {
             	int ctorId = Integer.parseInt(parts[parts.length - 1]);
             	ClassMeta meta = classes.get(typeName);
             	var args = parseBody(e);
-                Object instance = meta.create(ctorId, args);
+                Object instance = meta.create(ctorId, args, context);
                 context.add(instance);
                 sendJson(e, instance);
             } catch (Exception ex) {
@@ -70,12 +71,14 @@ public class Server {
             try {
                 String path = e.getRequestURI().getPath();
                 String[] parts = path.split("/");
+                ClassMeta meta = classes.get(parts[parts.length - 3]);
                 int id = Integer.parseInt(parts[parts.length - 2]);
                 int methodId = Integer.parseInt(parts[parts.length - 1]);
-                Shape item = findShapeById(id);
-                ClassMeta meta = classes.get(item.getClass().getSimpleName());
+                
+                System.out.println("Call " + meta.type + " " + id);
+                var item = context.findById(meta.type, id);
                 var args = parseBody(e);
-                Object result = meta.call(item, methodId, args);
+                Object result = meta.call(item, methodId, args, context);
                 context.update(item);
                 Map<String, Object> response = new HashMap<>();
                 response.put("result", result);
@@ -128,10 +131,10 @@ public class Server {
         System.out.println("Server started");
     }
 
-    @SuppressWarnings("unchecked")
 	private Shape findShapeById(int id) {
         for (ClassMeta meta : classes.values()) {
-            Shape item = context.findById((Class<Shape>) meta.type, id);
+            if (meta.type.getSuperclass() != Shape.class && meta.type != Shape.class) continue;
+            Shape item = (Shape) context.findById(meta.type, id);
             if (item != null) return item;
         }
         return null;
@@ -142,26 +145,39 @@ public class Server {
             JsonElement element = JsonParser.parseReader(reader);
             if (element.isJsonObject()) {
                 Map<String, JsonElement> map = new HashMap<>();
-                element.getAsJsonObject().entrySet().forEach(e -> {
-                    map.put(e.getKey(), e.getValue());
-                });
+                element.getAsJsonObject().entrySet().forEach(e -> map.put(e.getKey(), e.getValue()));
                 return map;
             }
             return new HashMap<>();
+        } catch (Exception e2) {
+        	e2.printStackTrace();
         }
+		return null;
     }
 
     private void sendJson(HttpExchange exchange, Object data) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
-        String json = new Gson().toJson(data);
+        Gson gson = new GsonBuilder()
+            .addSerializationExclusionStrategy(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes f) {
+                    return f.getAnnotation(com.example.annotations.JsonExclude.class) != null;
+                }
+                @Override
+                public boolean shouldSkipClass(Class<?> c) { return false; }
+            })
+            .create();
+        String json = gson.toJson(data);
         byte[] bytes = json.getBytes();
         exchange.sendResponseHeaders(200, bytes.length);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
+        } catch (Exception e) {
+        	e.printStackTrace();
         }
     }
 
-    private void sendError(HttpExchange exchange, int code, Exception e) throws IOException {
+    private void sendError(HttpExchange exchange, int code, Throwable e) throws IOException {
     	e.printStackTrace();
         Map<String, Object> error = new HashMap<>();
         error.put("error", e.getMessage());

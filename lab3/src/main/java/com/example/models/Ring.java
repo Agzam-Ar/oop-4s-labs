@@ -1,17 +1,15 @@
 package com.example.models;
 
-import com.example.annotations.Named;
+import com.example.annotations.*;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Ring extends Shape {
 
-	private @Getter @Setter int r1;
-	private @Getter @Setter int r2;
+	private @Get @Set int r1;
+	private @Get @Set int r2;
 
 	Ring() {}
 

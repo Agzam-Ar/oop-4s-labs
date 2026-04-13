@@ -1,10 +1,10 @@
 package com.example.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
+
+import com.example.annotations.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -12,12 +12,25 @@ public abstract class Shape {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter Integer id;
+    @Get Integer id;
 
-    private @Getter long timestamp = Instant.now().getEpochSecond();
+    private @Get long timestamp = Instant.now().getEpochSecond();
 
-    @Getter @Setter int x;
-    @Getter @Setter int y;
+    @Get @Set int x;
+    @Get @Set int y;
+
+    @ManyToOne
+    @JsonExclude
+    private ShapesGroup groupEntity;
+    
+    public String groupName() { 
+    	return groupEntity == null ? "<no group>" : groupEntity.name; 
+    }
+    
+    public void setGroup(@Named("groupId") ShapesGroup g) { 
+    	System.out.println("GROUP SET: " + g);
+    	this.groupEntity = g; 
+    }
 
     protected Shape() {}
 
