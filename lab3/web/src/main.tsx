@@ -41,7 +41,8 @@ const eBody = <div className="body"></div> as HTMLElement;
 		table.addHeader("")
 		const put = (e: any) => {
 			meta.properties.forEach(prop => {
-				let src = e[prop.name.toLowerCase()]
+				let src = e[prop.name]
+				console.log(src, prop.setter)
 				if(!prop.setter) return table.addCell(<div>{src}</div>)
 				const input = <input value={src} /> as HTMLInputElement
 				const container = <div class="input" tabIndex={1}>{input}</div>
@@ -62,7 +63,7 @@ const eBody = <div className="body"></div> as HTMLElement;
 					}
 					(async () => {
 						try {
-							const res = (await post(`prop/${e['id']}/${prop.id}`, value)).result
+							const res = (await post(`prop/${e['id']}/${prop.id}`, {value:value})).result
 							console.log(res)
 							src = value
 							container.classList.remove('err')
@@ -81,10 +82,27 @@ const eBody = <div className="body"></div> as HTMLElement;
 				const btn = <button className="call" onClick={() => {
 					const parms: any = {};
 					// TODO: request parms
+					// let foo = 
+
+					let ok = true
+					m.params.forEach((p, pid) => {
+						while(true) {
+							const input:string|null = prompt(`${p.name} (${p.type})`);//inputs[pid]
+							if(input === null) return ok = false;
+							const string = p.type.toLowerCase().includes('string')
+							const value: any = string ? input : parseFloat(input)
+							if(!string && (typeof (value) !== 'number' || isNaN(value))) continue
+							parms[p.name] = value
+							return
+						}
+					});
 					(async () => {
-						const res = (await post(`call/${e['id']}/${m.id}`, parms)).result
-						// alert(res)
-						btn.textContent = res === undefined ? "OK" : res
+						console.log('call', e)
+						const res = (await post(`call/${type}/${e['id']}/${m.id}`, parms))
+						if(res.error) {
+							alert(res.error) 
+							btn.textContent = "ERR"
+						} else btn.textContent = res.result === undefined ? "OK" : res.result
 					})()
 				}}>???</button>
 				table.addCell(btn)
